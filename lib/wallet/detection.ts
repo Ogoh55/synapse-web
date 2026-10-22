@@ -9,6 +9,16 @@ export interface ExtensionCheckResult {
   hasAny: boolean;
 }
 
+type WalletWindow = Window & {
+  freighterApi?: unknown;
+  freighter?: unknown;
+  xBull?: unknown;
+  xbull?: unknown;
+  xBullWallet?: unknown;
+  albedo?: unknown;
+  stellar?: { freighter?: unknown; xbull?: unknown };
+};
+
 /**
  * Checks if a specific wallet extension is injected into the global window object.
  */
@@ -22,21 +32,16 @@ export function checkInstalledExtensions(): ExtensionCheckResult {
     };
   }
 
-  const win = window as any;
+  const win = window as WalletWindow;
 
   // Freighter detection
   const freighter = Boolean(
-    win.freighterApi ||
-      win.freighter ||
-      (win.stellar && win.stellar.freighter)
+    win.freighterApi || win.freighter || (win.stellar && win.stellar.freighter)
   );
 
   // xBull detection
   const xbull = Boolean(
-    win.xBull ||
-      win.xbull ||
-      win.xBullWallet ||
-      (win.stellar && win.stellar.xbull)
+    win.xBull || win.xbull || win.xBullWallet || (win.stellar && win.stellar.xbull)
   );
 
   // Albedo detection

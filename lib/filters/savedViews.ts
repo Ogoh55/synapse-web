@@ -57,12 +57,13 @@ export function sanitizeFilters(input: unknown): SavedViewFilters {
 function sanitizeView(input: unknown): SavedView | undefined {
   if (!input || typeof input !== "object") return undefined;
   const raw = input as Record<string, unknown>;
-  if (typeof raw.id !== "string" || typeof raw.name !== "string") {
+  const name = savedViewNameSchema.safeParse(raw.name);
+  if (typeof raw.id !== "string" || !name.success) {
     return undefined;
   }
   return {
     id: raw.id,
-    name: raw.name,
+    name: name.data,
     filters: sanitizeFilters(raw.filters),
   };
 }
@@ -97,11 +98,15 @@ export function storeSavedViews(views: SavedView[]): void {
   try {
     const payload: PersistedSavedViews = {
       version: SAVED_VIEWS_SCHEMA_VERSION,
-      views: views.map((view) => ({
+      views: views.flatMap((view) => {
+        const name = savedViewNameSchema.safeParse(view.name);
+        if (!name.success) return [];
+        return [{
         id: view.id,
-        name: view.name,
+        name: name.data,
         filters: sanitizeFilters(view.filters),
-      })),
+        }];
+      }),
     };
     localStorage.setItem(SAVED_VIEWS_KEY, JSON.stringify(payload));
   } catch {}
@@ -112,3 +117,4 @@ export function createSavedViewId(): string {
     .toString(36)
     .slice(2, 8)}`;
 }
+import { savedViewNameSchema } from "@/lib/validation/schemas";

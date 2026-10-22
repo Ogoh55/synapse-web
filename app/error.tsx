@@ -1,7 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
-import { AMBER, BG1, BG2, BORDER, DIM, MONO } from "@/lib/constants";
+import {
+  ACCENT_WEAK,
+  AMBER,
+  BG1,
+  BG2,
+  BORDER,
+  DIM,
+  MONO,
+  NEUTRAL,
+  ON_ACCENT,
+} from "@/lib/constants";
 
 export default function GlobalError({
   error,
@@ -32,7 +42,7 @@ export default function GlobalError({
           border: `1px solid ${BORDER}`,
           borderRadius: 12,
           background: BG1,
-          boxShadow: `0 0 0 1px rgba(245,166,35,0.05), 0 18px 80px rgba(0,0,0,0.45)`,
+          boxShadow: `0 0 0 1px ${ACCENT_WEAK}, 0 18px 80px rgba(0,0,0,0.45)`,
         }}
       >
         <div
@@ -42,7 +52,7 @@ export default function GlobalError({
             gap: 8,
             padding: "5px 10px",
             border: `1px solid ${BORDER}`,
-            background: "rgba(245,166,35,0.08)",
+            background: ACCENT_WEAK,
             color: AMBER,
             fontSize: 11,
             letterSpacing: "0.12em",
@@ -52,7 +62,9 @@ export default function GlobalError({
           Application error
         </div>
 
-        <h1 style={{ margin: "16px 0 10px", fontSize: 28, color: "#fff" }}>Something went wrong</h1>
+        <h1 style={{ margin: "16px 0 10px", fontSize: 28, color: NEUTRAL }}>
+          Something went wrong
+        </h1>
 
         <p style={{ margin: 0, color: DIM, lineHeight: 1.6 }}>
           The app hit an unexpected render error. You can safely retry this route and recover the
@@ -65,7 +77,7 @@ export default function GlobalError({
             marginTop: 18,
             padding: "10px 16px",
             background: AMBER,
-            color: "#0A0B0D",
+            color: ON_ACCENT,
             border: "none",
             cursor: "pointer",
             fontWeight: 700,

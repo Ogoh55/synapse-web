@@ -1,6 +1,6 @@
 "use client";
 import { STATUS_META } from "@/lib/constants";
-import { DIM, MONO } from "@/lib/constants";
+import { DIM, MONO, TRACK } from "@/lib/constants";
 import type { StatusRatio } from "@/lib/analytics/rollup";
 
 interface Props {
@@ -36,7 +36,7 @@ export function StatusRatioChart({ ratios }: Props) {
           <div
             style={{
               height: 6,
-              background: "rgba(255,255,255,0.06)",
+              background: TRACK,
               borderRadius: 2,
               overflow: "hidden",
             }}

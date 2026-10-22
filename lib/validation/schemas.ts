@@ -83,7 +83,39 @@ export function numericParamSchema(min: number, max: number) {
 }
 
 /** Zod schema for a required non-empty text parameter. */
-export const requiredTextSchema = z.string().trim().min(1, "Value is required");
+export const requiredTextSchema = z
+  .string()
+  .trim()
+  .min(1, "Value is required")
+  .max(256, "Value must be at most 256 characters")
+  .refine((value) => !/[<>\u0000-\u001f]/.test(value), "Value contains unsafe characters");
+
+export const labelSchema = z
+  .string()
+  .trim()
+  .min(1, "Label is required")
+  .max(80, "Label must be at most 80 characters")
+  .regex(/^[\p{L}\p{N} _.,'()-]+$/u, "Label contains unsupported characters");
+
+export const savedViewNameSchema = labelSchema.max(60, "Name must be at most 60 characters");
+
+export const safeHttpUrlSchema = z
+  .string()
+  .trim()
+  .max(2048, "URL is too long")
+  .transform((value, context) => {
+    try {
+      const url = new URL(value);
+      if (!['http:', 'https:'].includes(url.protocol)) {
+        context.addIssue({ code: z.ZodIssueCode.custom, message: "Only HTTP(S) URLs are allowed" });
+        return z.NEVER;
+      }
+      return url.toString();
+    } catch {
+      context.addIssue({ code: z.ZodIssueCode.custom, message: "Invalid URL" });
+      return z.NEVER;
+    }
+  });
 
 /**
  * Build a validation schema for an entrypoint's parameter set.

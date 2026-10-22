@@ -9,11 +9,11 @@ surface, rotation cadence, and rotation procedure.
 
 ## Inventory
 
-| Key / Identifier | Provider | Exposure surface | Owner | Rotation cadence | Rotation procedure |
-| --- | --- | --- | --- | --- | --- | --- |
-| Telemetry provider public key (e.g. Sentry DSN / public write key) | Error telemetry provider | Client bundle (`NEXT_PUBLIC_*` / `VITE_*` env var) | Frontend platform team | Quarterly | Manual — see below |
-| Web Vitals reporting identifier (e.g. analytics/site ID) | Web Vitals / analytics provider | Client bundle (`NEXT_PUBLIC_*` / `VITE_*` env var) | Frontend platform team | Quarterly | Manual — see below |
-| RPC provider key (if a client-side RPC provider is used) | RPC provider | Client bundle (`NEXT_PUBLIC_*` / `VITE_*` env var) | Frontend platform team | Quarterly | Manual — see below |
+| Key / Identifier | Provider | Exposure surface | Owner | Rotation cadence | Last review | Q4 2026 decision | Rotation procedure |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Telemetry provider public key (e.g. Sentry DSN / public write key) | Error telemetry provider | Client bundle (`NEXT_PUBLIC_*` / `VITE_*` env var) | Frontend platform team | Quarterly | 2026-10-18 | Retain; no abuse evidence in repository-visible configuration | Manual — see below |
+| Web Vitals reporting identifier (e.g. analytics/site ID) | Web Vitals / analytics provider | Client bundle (`NEXT_PUBLIC_*` / `VITE_*` env var) | Frontend platform team | Quarterly | 2026-10-18 | Retain; public identifier with provider-side quota monitoring | Manual — see below |
+| RPC provider key (if a client-side RPC provider is used) | RPC provider | Client bundle (`NEXT_PUBLIC_*` / `VITE_*` env var) | Frontend platform team | Quarterly | 2026-10-18 | Rotate only when configured; current default RPC requires no client key | Manual — see below |
 
 > If a future feature introduces a new client-exposed key or identifier, add a row to
 > this table in the same PR that introduces it. This is part of the PR review
@@ -27,6 +27,10 @@ listing every key above and prompting a review/rotation decision for each one.
 
 A key should be rotated immediately (outside the quarterly cadence) if there is
 evidence of abuse, unexpected quota consumption, or a provider-reported compromise.
+
+The Q4 2026 review found no additional client-exposed key categories in tracked configuration.
+Provider dashboards remain the authoritative source for quota-abuse evidence and must be checked by
+the listed owner before recording the next quarterly decision.
 
 ## Manual rotation procedure
 

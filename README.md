@@ -1,5 +1,9 @@
 # Synapse Core
 
+**Community:** [public roadmap](https://github.com/orgs/Synapse-bridgez/projects) ·
+[recommended entry issues](docs/community/good-first-issues.md) ·
+[RFC process](docs/rfc-process.md)
+
 A Soroban transaction-lifecycle dashboard built with Next.js 16 and React 19.
 
 > **Security**: to report a vulnerability, see [SECURITY.md](./SECURITY.md) or open a

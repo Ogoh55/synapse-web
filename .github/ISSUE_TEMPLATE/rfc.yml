@@ -1,0 +1,24 @@
+name: Request for comments
+description: Propose a significant architecture or product decision
+title: "RFC: "
+labels: ["rfc"]
+body:
+  - type: textarea
+    id: problem
+    attributes: { label: Problem, description: What decision is needed and why now? }
+    validations: { required: true }
+  - type: textarea
+    id: proposal
+    attributes: { label: Proposed approach, description: Describe the design and migration path. }
+    validations: { required: true }
+  - type: textarea
+    id: alternatives
+    attributes: { label: Alternatives considered }
+    validations: { required: true }
+  - type: textarea
+    id: questions
+    attributes: { label: Open questions }
+  - type: input
+    id: deadline
+    attributes: { label: Comment deadline, description: Use YYYY-MM-DD; normally seven days after opening. }
+    validations: { required: true }

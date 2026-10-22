@@ -37,10 +37,18 @@ export function SafeUrlLink({ url, className }: { url: unknown; className?: stri
 interface AdminTabProps {
   callbackUrl?: string;
   addressLabel?: string;
+  loading?: boolean;
+  error?: string;
 }
 
-export default function AdminTab({ callbackUrl, addressLabel }: AdminTabProps) {
+export default function AdminTab({ callbackUrl, addressLabel, loading = false, error }: AdminTabProps) {
   const [label, setLabel] = useState(addressLabel ?? '');
+
+  if (loading) return <p role="status">Loading administration settings…</p>;
+  if (error) return <p role="alert">Unable to load administration settings: {error}</p>;
+  if (!callbackUrl && !addressLabel) {
+    return <p className="admin-tab__empty">No administration settings are available yet.</p>;
+  }
 
   return (
     <div className="admin-tab">

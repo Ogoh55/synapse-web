@@ -8,9 +8,17 @@ import { StatusRatioChart } from "./StatusRatioChart";
 import { StageDurationChart } from "./StageDurationChart";
 import { AMBER, BG3, BORDER, DIM, MONO } from "@/lib/constants";
 
-export function AnalyticsTab() {
+interface AnalyticsTabProps {
+  loading?: boolean;
+  error?: string;
+}
+
+export function AnalyticsTab({ loading = false, error }: AnalyticsTabProps = {}) {
   const txs = useLiveTransactions();
   const rollup = useMemo(() => computeRollup(txs), [txs]);
+
+  if (loading) return <p role="status">Loading analytics…</p>;
+  if (error) return <p role="alert">Unable to load analytics: {error}</p>;
 
   return (
     <div

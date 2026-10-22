@@ -13,10 +13,27 @@
   --border: rgba(245, 166, 35, 0.15);
   --dim: rgba(255, 255, 255, 0.35);
   --fg: #ffffff;
+  --fg-muted: rgba(255, 255, 255, 0.8);
   --pending: #f5a623;
   --processing: #4fc3f7;
   --completed: #66bb6a;
   --failed: #ef5350;
+  --fg-muted: #c9ccd1;
+  --on-accent: #0a0b0d;
+  --accent-weak: rgba(245, 166, 35, 0.08);
+  --accent-soft: rgba(245, 166, 35, 0.14);
+  --accent-border: rgba(245, 166, 35, 0.5);
+  --accent-focus: rgba(245, 166, 35, 0.4);
+  --amber-glow: rgba(245, 166, 35, 0.55);
+  --danger: #ef5350;
+  --danger-bg: rgba(239, 83, 80, 0.12);
+  --danger-border: rgba(239, 83, 80, 0.5);
+  --hover: rgba(255, 255, 255, 0.05);
+  --track: rgba(255, 255, 255, 0.06);
+  --access-one-time: #a78bfa;
+  --access-relay: #4fc3f7;
+  --access-admin: #ef5350;
+  --access-public: #66bb6a;
   --status-pending: #ffc857;
   --status-processing: #56b4e9;
   --status-completed: #f0e442;
@@ -29,6 +46,17 @@
   --status-processing-glow: rgba(86, 180, 233, 0.4);
   --status-completed-glow: rgba(240, 228, 66, 0.4);
   --status-failed-glow: rgba(204, 121, 167, 0.4);
+
+  /* Text tiers between --fg and --dim, for body copy and secondary labels. */
+  --fg-soft: rgba(255, 255, 255, 0.87);
+  --fg-muted: rgba(255, 255, 255, 0.68);
+  /* Text drawn on top of an --amber / --failed filled surface. */
+  --on-accent: #0a0b0d;
+  /* Text drawn on top of a status-colored filled surface. */
+  --on-status: #0a0b0d;
+  /* Extra hue used by the docs access badges. */
+  --violet: #a78bfa;
+  --failed-surface: rgba(239, 83, 80, 0.08);
 }
 
 :root[data-theme="light"] {
@@ -44,6 +72,7 @@
   --status-processing-glow: rgba(0, 90, 131, 0.25);
   --status-completed-glow: rgba(112, 102, 0, 0.25);
   --status-failed-glow: rgba(139, 49, 94, 0.25);
+  --on-status: #ffffff;
 }
 
 [data-theme="light"] {
@@ -56,10 +85,70 @@
   --border: rgba(0, 0, 0, 0.14);
   --dim: rgba(0, 0, 0, 0.55);
   --fg: #14171d;
+  --fg-muted: rgba(0, 0, 0, 0.72);
   --pending: #b26a00;
   --processing: #0277bd;
   --completed: #2e7d32;
   --failed: #c62828;
+  --fg-muted: #4a4f57;
+  --on-accent: #ffffff;
+  --accent-weak: rgba(178, 106, 0, 0.08);
+  --accent-soft: rgba(178, 106, 0, 0.14);
+  --accent-border: rgba(178, 106, 0, 0.55);
+  --accent-focus: rgba(178, 106, 0, 0.35);
+  --amber-glow: rgba(178, 106, 0, 0.3);
+  --danger: #c62828;
+  --danger-bg: rgba(198, 40, 40, 0.08);
+  --danger-border: rgba(198, 40, 40, 0.45);
+  --hover: rgba(0, 0, 0, 0.05);
+  --track: rgba(0, 0, 0, 0.08);
+  --access-one-time: #6d28d9;
+  --access-relay: #0277bd;
+  --access-admin: #c62828;
+  --access-public: #2e7d32;
+}
+
+/*
+ * Semantic aliases used by lib/constants.ts (AMBER, BG0–BG3). They were
+ * referenced but never declared, so those constants resolved to nothing.
+ * Each points at the active palette above, so it follows the theme toggle.
+ */
+:root,
+[data-theme] {
+  --accent: var(--amber);
+  --accent-dim: var(--amber-dim);
+  --bg-0: var(--bg0);
+  --bg-1: var(--bg1);
+  --bg-2: var(--bg2);
+  --bg-3: var(--bg3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg0);
+  color: var(--fg);
+  /* Defined by next/font in app/layout.tsx; see MONO in lib/constants.ts. */
+  font-family: var(--font-ibm-plex-mono), monospace;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg0);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+  --bg-0: var(--bg0);
+  --bg-1: var(--bg1);
+  --bg-2: var(--bg2);
+  --bg-3: var(--bg3);
 }
 
 * {
@@ -166,7 +255,7 @@ body {
 
   [role="tab"][aria-selected="true"] {
     border-bottom-width: 3px !important;
-    color: #fff !important;
+    color: var(--fg) !important;
   }
 }
 

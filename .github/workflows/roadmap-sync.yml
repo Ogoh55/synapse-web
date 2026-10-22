@@ -1,0 +1,19 @@
+name: Roadmap sync
+on:
+  issues:
+    types: [opened, reopened, closed, labeled, assigned]
+  pull_request_target:
+    types: [opened, reopened, closed, ready_for_review]
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+jobs:
+  add-to-roadmap:
+    if: vars.ROADMAP_PROJECT_URL != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: ${{ vars.ROADMAP_PROJECT_URL }}
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}

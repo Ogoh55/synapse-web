@@ -85,7 +85,7 @@ export function sendWebVitalsMetric(
   };
 
   if (debug && typeof console !== "undefined") {
-    console.log(
+    console.debug(
       `[Telemetry:WebVitals] ${payload.name}=${payload.value} (${payload.rating})`,
       payload
     );

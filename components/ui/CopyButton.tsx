@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useToast } from "@/components/ui/Toast";
-import { DIM } from "@/lib/constants";
+import { DIM, NEUTRAL } from "@/lib/constants";
 
 interface CopyButtonProps {
   value: string;
@@ -46,7 +46,7 @@ export function CopyButton({ value, label = "Value", style }: CopyButtonProps) {
         ...style,
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.color = "#fff";
+        e.currentTarget.style.color = NEUTRAL;
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.color = DIM;

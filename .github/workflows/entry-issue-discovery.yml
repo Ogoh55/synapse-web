@@ -1,0 +1,21 @@
+name: Entry issue discovery
+on:
+  issues:
+    types: [opened, edited, closed, labeled, unlabeled]
+  schedule:
+    - cron: "31 3 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: read
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: node scripts/generate-entry-issues.mjs
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with: { commit_message: "docs: refresh entry issue discovery" }

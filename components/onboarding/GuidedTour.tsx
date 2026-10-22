@@ -1,8 +1,9 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { AMBER, BG0, BG1, BG2, BORDER, DIM, MONO, TEXT } from "@/lib/constants";
+import { BG2, BORDER, DIM, MONO, TEXT } from "@/lib/constants";
 import { WALLET_DOMAIN_BINDING_DOCS } from "@/lib/wallet/origin";
+import { TourControls } from "@/components/onboarding/TourControls";
 
 /**
  * First-visit anti-phishing briefing for wallet-connect and signing.
@@ -144,7 +145,6 @@ export function GuidedTour({ reopenSignal = 0, trigger = 0 }: GuidedTourProps) {
 
   if (!open) return null;
 
-  const isLast = step === STEPS.length - 1;
   return (
     <div
       role="dialog"
@@ -197,57 +197,7 @@ export function GuidedTour({ reopenSignal = 0, trigger = 0 }: GuidedTourProps) {
         <div style={{ fontSize: 12, color: DIM, lineHeight: 1.5, marginBottom: 16 }}>
           {current.body}
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
-          <button
-            type="button"
-            onClick={dismiss}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: DIM,
-              fontFamily: MONO,
-              fontSize: 11,
-              cursor: "pointer",
-              padding: 0,
-            }}
-          >
-            Skip tour
-          </button>
-          <div style={{ display: "flex", gap: 8 }}>
-            {step > 0 && (
-              <button
-                type="button"
-                onClick={back}
-                style={{
-                  background: "transparent",
-                  border: `1px solid ${BORDER}`,
-                  color: TEXT,
-                  fontFamily: MONO,
-                  fontSize: 11,
-                  cursor: "pointer",
-                  padding: "6px 12px",
-                }}
-              >
-                Back
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={next}
-              style={{
-                background: TEXT,
-                border: `1px solid ${TEXT}`,
-                color: BG2,
-                fontFamily: MONO,
-                fontSize: 11,
-                cursor: "pointer",
-                padding: "6px 12px",
-              }}
-            >
-              {isLast ? "Finish" : "Next"}
-            </button>
-          </div>
-        </div>
+        <TourControls step={step} totalSteps={STEPS.length} onSkip={close} onBack={back} onNext={advance} />
       </div>
     </div>
   );

@@ -19,6 +19,17 @@ const eslintConfig = defineConfig([
     "coverage/**",
   ]),
 
+  // An eslint-disable comment that no longer suppresses anything is a fixed
+  // (or never-real) problem left behind as noise. Fail on it so stale
+  // suppressions get removed instead of quietly accumulating, and so a
+  // directive can't sit in place ready to hide a future bug on that line.
+  {
+    name: "suppressions",
+    linterOptions: {
+      reportUnusedDisableDirectives: "error",
+    },
+  },
+
   // ---------------------------------------------------------------------------
   // Security rules (eslint-plugin-security v3)
   //

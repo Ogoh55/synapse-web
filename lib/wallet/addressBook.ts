@@ -2,6 +2,8 @@
 // Entries are {address, label} pairs stored in localStorage and surfaced as
 // autocomplete suggestions wherever an address is entered.
 
+import { isValidStellarAddress, labelSchema } from "@/lib/validation/schemas";
+
 const STORAGE_KEY = "handsoff.addressBook.v1";
 
 export interface AddressBookEntry {
@@ -15,7 +17,7 @@ export interface AddressBookEntry {
  * form-validation overhaul landing first.
  */
 export function isValidAddress(address: string): boolean {
-  return /^G[A-Z2-7]{55}$/.test(address.trim());
+  return isValidStellarAddress(address);
 }
 
 function isEntry(value: unknown): value is AddressBookEntry {
@@ -56,8 +58,9 @@ export function saveAddress(
   entry: AddressBookEntry
 ): AddressBookEntry[] {
   const address = entry.address.trim();
-  const label = entry.label.trim();
-  if (!isValidAddress(address) || !label) return entries;
+  const parsedLabel = labelSchema.safeParse(entry.label);
+  if (!isValidAddress(address) || !parsedLabel.success) return entries;
+  const label = parsedLabel.data;
 
   const next = entries.filter((e) => e.address !== address);
   next.push({ address, label });

@@ -1,0 +1,38 @@
+name: Community notifications
+on:
+  release:
+    types: [published]
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      event_type:
+        description: Notification type
+        type: choice
+        options: [drips-wave, test]
+        required: true
+permissions:
+  contents: read
+  issues: read
+jobs:
+  notify:
+    if: >-
+      github.event_name == 'release' ||
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'rfc') ||
+      contains(github.event.issue.labels.*.name, 'drips-wave')
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Post webhook
+        if: vars.COMMUNITY_NOTIFY_ENABLED == 'true'
+        env:
+          WEBHOOK_URL: ${{ secrets.COMMUNITY_WEBHOOK_URL }}
+          REPOSITORY: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_URL: ${{ github.event.release.html_url || github.event.issue.html_url || github.server_url }}
+          EVENT_TITLE: ${{ github.event.release.name || github.event.issue.title || inputs.event_type }}
+        run: |
+          payload=$(jq -n --arg content "[$REPOSITORY] $EVENT_NAME: $EVENT_TITLE — $EVENT_URL" '{content:$content}')
+          curl --fail-with-body --retry 3 --retry-all-errors --max-time 15 \
+            -H 'content-type: application/json' --data "$payload" "$WEBHOOK_URL"

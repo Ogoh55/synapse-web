@@ -31,24 +31,24 @@ export interface TelemetryContext {
  * `signedXdr` are all caught.
  */
 const SENSITIVE_KEY_PATTERNS = [
-  'privatekey',
-  'private_key',
-  'secretkey',
-  'secret_key',
-  'seedphrase',
-  'seed_phrase',
-  'mnemonic',
-  'password',
-  'passphrase',
-  'signedxdr',
-  'signed_xdr',
-  'signedtransaction',
-  'signed_transaction',
-  'rawtransaction',
-  'raw_transaction',
-  'signature',
-  'auth',
-  'token',
+  "privatekey",
+  "private_key",
+  "secretkey",
+  "secret_key",
+  "seedphrase",
+  "seed_phrase",
+  "mnemonic",
+  "password",
+  "passphrase",
+  "signedxdr",
+  "signed_xdr",
+  "signedtransaction",
+  "signed_transaction",
+  "rawtransaction",
+  "raw_transaction",
+  "signature",
+  "auth",
+  "token",
 ];
 
 function isSensitiveKey(key: string): boolean {
@@ -60,10 +60,7 @@ function isSensitiveKey(key: string): boolean {
  * Recursively strip sensitive fields from a context object before reporting.
  * Returns a new object; the input is not mutated.
  */
-export function scrubContext(
-  context: Record<string, unknown>,
-  depth = 0,
-): Record<string, unknown> {
+export function scrubContext(context: Record<string, unknown>, depth = 0): Record<string, unknown> {
   if (depth > 6) {
     return {};
   }
@@ -73,7 +70,7 @@ export function scrubContext(
     if (isSensitiveKey(key)) {
       continue;
     }
-    if (value && typeof value === 'object' && !Array.isArray(value)) {
+    if (value && typeof value === "object" && !Array.isArray(value)) {
       scrubbed[key] = scrubContext(value as Record<string, unknown>, depth + 1);
     } else {
       scrubbed[key] = value;
@@ -87,11 +84,11 @@ export function scrubContext(
  * No-ops in local development to avoid noise from dev machines.
  */
 export function isTelemetryEnabled(): boolean {
-  if (typeof process !== 'undefined' && process.env) {
-    if (process.env.NODE_ENV === 'development') {
+  if (typeof process !== "undefined" && process.env) {
+    if (process.env.NODE_ENV === "development") {
       return false;
     }
-    if (process.env.NEXT_PUBLIC_TELEMETRY_DISABLED === 'true') {
+    if (process.env.NEXT_PUBLIC_TELEMETRY_DISABLED === "true") {
       return false;
     }
   }
@@ -104,10 +101,7 @@ export function isTelemetryEnabled(): boolean {
  * This is a no-op in local development. Only unhandled crashes should call
  * this; handled/expected errors are out of scope.
  */
-export function reportError(
-  error: unknown,
-  context: TelemetryContext = {},
-): void {
+export function reportError(error: unknown, context: TelemetryContext = {}): void {
   if (!isTelemetryEnabled()) {
     return;
   }
@@ -124,14 +118,10 @@ export function reportError(
 
   // Fallback: surface to the console so errors are not silently dropped when
   // no provider is configured in a non-development environment.
-  // eslint-disable-next-line no-console
-  console.error('[telemetry] unhandled error', error, scrubbed);
+  console.error("[telemetry] unhandled error", error, scrubbed);
 }
 
-type TelemetryProvider = (
-  error: unknown,
-  context: Record<string, unknown>,
-) => void;
+type TelemetryProvider = (error: unknown, context: Record<string, unknown>) => void;
 
 let provider: TelemetryProvider | null = null;
 
